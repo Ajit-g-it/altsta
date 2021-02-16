@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.altsta</groupId>
     <artifactId>altsta</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>altsta</name>
     <description>Demo project for Spring Boot</description>
     <properties>
