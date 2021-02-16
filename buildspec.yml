@@ -13,8 +13,6 @@ phases:
   post_build:
     commands:
     - echo Build completed on `date`
-    - mvn package
-    - mv target/altsta-0.0.1-SNAPSHOT.jar altsta-0.0.1-SNAPSHOT.jar
 artifacts:
   files:
   - target/altsta-0.0.1-SNAPSHOT.jar
