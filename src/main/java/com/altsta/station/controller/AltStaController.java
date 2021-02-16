@@ -6,11 +6,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
@@ -23,24 +29,31 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 @RestController
 public class AltStaController {
 	
-	@Value("amazon.aws.region")
+//			amazon.aws.accesskey=AKIAQZPA5BLYBFW57U66
+//			amazon.aws.secretkey=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
+//			amazon.aws.region=us-east-1
+//			amazon.aws.endpoint=
+	
+	@Value("${amazon.aws.region}")
     private String amazonAwsRegion;
 
-    @Value("amazon.aws.accessKey")
+    @Value("${amazon.aws.accesskey}")
     private String amazonAwsAccessKey;
 
-    @Value("amazon.aws.secretKey")
+    @Value("${amazon.aws.secretkey}")
     private String amazonAwsSecretKey;
     
-    @Value("amazon.aws.endpoint")
+    @Value("${amazon.aws.endpoint}")
     private String amazonAwsEndpoint;
 
     @GetMapping("/alternate/stations/{station}")
     public List<String> fetchStations(@PathVariable (name = "station") String station) {
     	   
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", ""))
-                .build();
+//        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+//                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", ""))
+//                .build();
+        
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().withCredentials(amazonAWSCredentialsProvider()).withRegion(amazonAwsRegion).build();
         
         DynamoDB dynamoDB = new DynamoDB(client);
 
@@ -74,33 +87,25 @@ public class AltStaController {
         }
         catch (Exception e) {
         	e.printStackTrace();
-            System.err.println("Unable to query movies from 1985");
-            System.err.println(e.getMessage());
         }
         
-//        ScanSpec scanSpec = new ScanSpec();
-//
-//      //  { Item: {year=1989, name=Bill & Ted's Excellent Adventure, rating=****, fans=[James, Sara]} }
-//        List<Movie> itemList = new ArrayList<>();
-//        try {
-//            ItemCollection<ScanOutcome> items = table.scan(scanSpec);
-//
-//            Iterator<Item> iter = items.iterator();
-//            while (iter.hasNext()) {
-//                Item item = iter.next();
-//                
-//                System.out.println(item);
-//  
-//               
-//               itemList.add(Movie.builder().name(item.getString("name")).year(item.getString("year")).rating(item.getString("rating")).fans( item.getList("fans")).build());
-//                	
-//               
-//            }
-//
-//        } catch (Exception e) {
-//        }
     	
         return itemList;
     }
+    
+    public AWSCredentialsProvider amazonAWSCredentialsProvider() {
+        return new AWSStaticCredentialsProvider(amazonAWSCredentials());
+    }
+
+    @Bean
+    public AWSCredentials amazonAWSCredentials() {
+        return new BasicAWSCredentials(amazonAwsAccessKey, amazonAwsSecretKey);
+    }
+    
+    @GetMapping(path = "/")
+    public ResponseEntity healthCheck() {
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }
 
