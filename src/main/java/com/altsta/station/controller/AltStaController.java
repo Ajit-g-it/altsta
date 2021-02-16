@@ -93,6 +93,11 @@ public class AltStaController {
         return itemList;
     }
     
+    @GetMapping("/alternate/hello")
+    public String helloWorld() {
+    	return "Hello World";
+    }
+    
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
         return new AWSStaticCredentialsProvider(amazonAWSCredentials());
     }
