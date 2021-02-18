@@ -95,12 +95,12 @@ public class AltStaController {
     
     @GetMapping("/alternate/hello")
     public String helloWorld() {
-    	return "Hello World";
+    	return "Hello World RM";
     }
     
     @GetMapping("/alternate/hello2")
     public String helloWorld2() {
-    	return "Hello World 2";
+    	return "Hello World RM 2";
     }
     
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
