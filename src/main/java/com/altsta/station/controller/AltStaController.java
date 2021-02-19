@@ -29,11 +29,6 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 @RestController
 public class AltStaController {
 	
-//			amazon.aws.accesskey=AKIAQZPA5BLYBFW57U66
-//			amazon.aws.secretkey=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
-//			amazon.aws.region=us-east-1
-//			amazon.aws.endpoint=
-	
 	@Value("${amazon.aws.region}")
     private String amazonAwsRegion;
 
@@ -88,25 +83,19 @@ public class AltStaController {
         catch (Exception e) {
         	e.printStackTrace();
         }
-        
-    	
         return itemList;
     }
-    
-    @GetMapping("/alternate/hello")
-    public String helloWorld() {
-    	return "Hello World RM";
-    }
-    
-    @GetMapping("/alternate/hello2")
-    public String helloWorld2() {
-    	return "Hello World RM 2";
-    }
+   
     
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
         return new AWSStaticCredentialsProvider(amazonAWSCredentials());
     }
 
+    @GetMapping("/alternate/hello")
+    public String helloWorld2() {
+    	return "Hello Stachia";
+    }
+    
     @Bean
     public AWSCredentials amazonAWSCredentials() {
         return new BasicAWSCredentials(amazonAwsAccessKey, amazonAwsSecretKey);
