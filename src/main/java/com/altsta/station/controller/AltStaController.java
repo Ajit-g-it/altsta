@@ -43,7 +43,7 @@ public class AltStaController {
 
     @GetMapping("/alternate/stations/{station}")
     public List<String> fetchStations(@PathVariable (name = "station") String station) {
-    	   
+    	  // comment 
 //        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
 //                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", ""))
 //                .build();
