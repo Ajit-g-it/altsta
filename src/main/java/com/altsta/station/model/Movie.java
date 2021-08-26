@@ -23,5 +23,6 @@ public class Movie {
 	private String name;
 	private String rating;
 	private List<String> fans;
+	// test
 
 }
